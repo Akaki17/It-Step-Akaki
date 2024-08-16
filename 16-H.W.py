@@ -86,4 +86,3 @@
 # print('\n')
 # student2.display_info()
 
-# https://github.com/Akaki17/It-Step-Akaki
