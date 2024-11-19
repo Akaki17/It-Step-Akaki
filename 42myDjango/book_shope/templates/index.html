@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} Book_Shop Main Page {% endblock %}
+
+
+{% block content %}
+
+
+    {% if perms.book_shope.add_product %}
+        <a class='btn btn-primary' href='{% url "book_shope:add_product" %}'>Add New Product</a>
+    {% endif %}
+
+    <div class="container mt-5">
+            
+            {% include 'paginator.html' %}
+            <div class="row">
+                <div class="col">
+                    {% include 'category_filter.html' %}
+                </div>
+                <div class="row">
+                    {% include 'products.html' %}
+                </div>
+            </div>
+            {% include 'paginator.html' %}
+        </div>
+
+{% endblock  %}
+    
