@@ -1,0 +1,21 @@
+{% for product in products %}
+    <div class="card" style="width: 18rem; margin:7px">
+        {% if product.picture %}
+            <img src="{{ product.picture.url }}" class="card-img-top" alt="...">
+        {% else %}
+            <img src="https://img.freepik.com/premium-photo/book-with-question-mark_1029469-140806.jpg?w=1800" class="card-img-top" alt="...">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title"><span style="color: red">Name:</span> {{ product.name }}</h5>
+            <p class="card-text"><span style="color: red">Price:</span> ${{ product.price }}</p>
+            <p class="card-text"><span style="color: red">Categories: </span> <span class='badge text-bg-secondary'>{{ product.category.all|join:", " }}</span></p>
+            <p class="card-text">Description: {{ product.description|truncatewords:20 }}</p>
+            <div class="card-footer text-center">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'book_orders:add_cart_item' product.id %}" class="btn btn-sm btn-outline-primary">Add to Cart</a>
+                {% endif %}
+                <a href="{% url 'book_shope:detail_product' product.id %}" class="btn btn-sm btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
