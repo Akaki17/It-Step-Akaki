@@ -1,0 +1,19 @@
+/* Add Product Button Style */
+.btn-add-product {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text color */
+    padding: 6.5px 20px; /* Padding for the button */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline from text */
+    display: inline-block; /* Inline block to allow padding */
+    font-size: 16px; /* Font size */
+    margin: 10px 0; /* Margin for spacing */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+}
+
+.btn-add-product:hover {
+    background-color: #657837; /* Darker green on hover */
+}
