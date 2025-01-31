@@ -1,0 +1,78 @@
+{% load static %}
+
+{% for product in products %}
+
+    <link rel="stylesheet" href="{% static 'css/products.css' %}"/>
+
+    <div class="product-card">
+        {% if product.picture %}
+            <img src="{{ product.picture.url }}" class="card-img-top product-img" alt="...">
+        {% else %}
+            <img src="https://img.freepik.com/premium-photo/book-with-question-mark_1029469-140806.jpg" class="card-img-top product-img" alt="...">
+        {% endif %}
+        <div class="card-main-body">
+            <div class="card-horizontal-body">
+                <div class="small-infos-container">
+                    
+                    <div class='cont-small1'>
+                        <h5 class="product-title">{{ product.name }}</h5>
+                        <p class="product-info small-size1">Categories: <span class="badge text-bg-secondary">{{ product.category.all|join:", " }}</span></p>
+                        <p class="product-price">${{ product.price }}</p>
+                    </div>
+                    
+                    <div class="cont-small1">
+                        <p class="product-info">Calories: {{ product.calories }}</p>
+                        <p class="product-info">Protein: {{ product.protein }}</p>
+                        <p class="product-info">Spiciness Rate: {{ product.spiciness_level }}</p>
+                        <p class="product-info">Rating: {{ product.spiciness_level }}</p>
+                    </div>
+
+                </div>            
+                <a href="{% url 'shope:detail_product' product.id %}" class="no-underline"> 
+                    <p class="card-text product-description">{{ product.description|truncatewords:25 }}</p> 
+                </a>
+            </div>
+            <div class="back">
+                {% if not product.stock %} 
+                        <p class="card-text product-stock text-danger">Out Of Stock</p> 
+                {% else %} 
+                    <p class="card-text product-stock text-success">In Stock</p> 
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'orders:add_cart_item' product.id %}" id="add-cart-form-{{ product.id }}" class="add-cart-form">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="submitForm('{{ product.id }}')">Add to Cart</button>
+                    </form>
+                {% endif %}
+                {% comment %} <a href="{% url 'shope:detail_product' product.id %}" class="btn btn-sm btn-primary">View Details</a> {% endcomment %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<script>
+    function submitForm(productId) {
+        const form = document.getElementById(`add-cart-form-${productId}`);
+        const formData = new FormData(form);
+        const url = form.action;
+    
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);  // You can replace this with your custom alert or update the page dynamically
+                document.querySelector('.badge.badge-primary').textContent = data.cart_item_count;  // Update cart item count in the navbar
+            } else {
+                alert(data.message);  // Handle error message
+            }
+        });
+    }
+</script>

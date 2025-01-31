@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %} Health Main Page {% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+
+    {% if perms.shope.add_product %}
+        <a class='btn btn-primary my-3' href='{% url "shope:add_product" %}'>Add New Product</a>
+    {% endif %}
+
+    <div class="cont-main-size" >
+        <div class="row">
+            
+            <div class="col-lg-2 col-md-3;">
+                {% include 'category_filter.html' %}
+            </div>
+            
+            
+            <div class="col-lg-9 col-md-17">
+                <div class="row">
+                    {% include 'products.html' %}
+                </div>
+                {% include 'paginator.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

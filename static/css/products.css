@@ -1,0 +1,109 @@
+.product-card {
+    background-color: rgb(193, 193, 218)!important;
+    display: flex;
+    margin: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    width: 95%;
+    height: 13rem;
+    margin: 7px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 5px;
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+}
+.product-img {
+    width: 150px;
+    object-fit: cover;
+}
+.card-main-body{
+    /* background-color: rgba(24, 23, 23, 0.9); */
+    padding: 5px;
+    width: 90%;
+
+    
+}
+.card-horizontal-body{
+    /* background-color: red; */
+    width: 100%;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+
+}
+/* static/book_shope/css/products.css */
+
+.cont-small1 {
+    display: flex;
+    flex-direction: column;
+    /* background-color: rgb(157, 255, 0); */
+}
+
+.cont-small1 > * {
+    margin-bottom: 2px; /* Add margin-bottom to each child element */
+}
+
+.cont-small1 > *:last-child {
+    margin-bottom: 0; /* Remove margin for the last child */
+}
+
+.small-infos-container {
+    /* background-color: #141a16; */
+    height: 60%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.product-title {
+    color: #343a40;
+    font-weight: bold;
+    /* background-color: #28a745; */
+}
+.small-size1{
+    width: 50%;
+    /* background-color: blueviolet; */
+}
+
+.product-price {
+    color: #28a745;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 0;
+    /* background-color: rgb(140, 0, 255); */
+}
+
+.product-info {
+    color: #7d6c6d!important;
+    font-size: 0.9em;
+}
+
+.product-stock {
+    font-weight: bold;
+}
+
+.product-description {
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+
+.back{
+    /* background-color: rgb(0, 255, 85); */
+    display: flex;
+    justify-content: space-around;
+}
+.no-underline{
+    text-decoration: none;
+}
+
+/* @media (max-width: 767px) {
+    .product-card {
+        background-color: rgb(17, 17, 196);
+    }
+} */

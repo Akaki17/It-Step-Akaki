@@ -1,0 +1,28 @@
+.cont-main-size {
+    width: 95%;
+    margin: 0 auto;
+    /* background-color: red; */
+}
+
+.card {
+    margin-bottom: 40px;
+}
+
+.card-header {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.form-check-label {
+    margin-left: 5px;
+}
+
+.btn-outline-primary {
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}

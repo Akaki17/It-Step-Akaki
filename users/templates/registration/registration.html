@@ -4,14 +4,16 @@
 
 {% block content %}
 
-    <form method='post'> 
+    <form method='POST'> 
         {% csrf_token %}
         {{ form|crispy }}
 
-        <p>Already have an account? Login
-            <a>here</a>
-        </p>
         <button type='submit' class='btn btn-success'>Sign Up</button>
     </form>
 
+    <span>Already have an account? Login</span>
+
+    <a href="/users/login" type='submit'>
+        here
+    </a>
 {% endblock %}

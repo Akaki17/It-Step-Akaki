@@ -1,0 +1,20 @@
+<form method="get" id="categoryFilterForm">
+    <div class="d-flex flex-wrap justify-content-between">
+        {% for category_type, category_by_type in categories_by_type.items %}
+        <div style="width:6rem; height:auto; display:flex; flex-direction: column; justify-content: center; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-size:0.90rem;">{{ category_type }}</h3>
+            {% for category in category_by_type %}
+            <div class="p-2">
+                <input 
+                    type="checkbox" 
+                    name="category" 
+                    value="{{ category.id }}" 
+                    {% if category.id|stringformat:"s" in selected_categories %}checked{% endif %}
+                    onchange="document.getElementById('categoryFilterForm').submit();">
+                <label style="font-size:0.75rem;">{{ category.name }}</label>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</form>

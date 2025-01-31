@@ -1,48 +1,118 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'book_shope:index' %}">
-      <img src="{% static 'images/logo.png' %}" alt="Book Shope Logo" style="height: 40px;">
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary position-sticky top-0" style="z-index:1020;">
+<div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'shope:index' %}">
+        <img src="{% static 'img/logo.png' %}" alt="Logo" style="width: 80px; height: auto;">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ user }}
-          </a>
-          <ul class="dropdown-menu">
-            {% if user.is_authenticated %}
-              <form action="{% url 'users:logout' %}" method="post">
-                <li>
-                  {% csrf_token %}
-                  <button type="submit" class="dropdown-item" href="#">Logout</button>
-                </li>
-              </form>
-            {% else %}
-              <li>
-                <a class="dropdown-item" href="/users/login">Login</a>
-              </li>
-            {% endif %}
-            <li><a class="dropdown-item" href="{% url 'book_orders:cart_view' %}">My Cart</a></li>
-            <li><a class="dropdown-item" href="{% url 'book_orders:orders' %}">Your Orders</a></li> <!-- Correct URL pattern -->
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-      </ul>
-      <form class="d-flex" role="search" action="{% url 'book_shope:index' %}" method="get">
-        <input class="form-control me-2" type="search" name="product_name" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+        <ul class="navbar-nav me-auto mb-4 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ user }}
+                </a>
+                <ul class="dropdown-menu">
+                    {% if user.is_authenticated %}
+                        <form action="{% url 'users:logout' %}" method="post">
+                            <li>
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item" href="#">Logout</button>
+                            </li>
+                        </form>
+                    {% else %}
+                        <li>
+                            <a class="dropdown-item" href="/users/login">Login</a>
+                        </li>
+                    {% endif %}
+                    <li><a class="dropdown-item" href="{% url 'orders:cart_view' %}">My Cart</a></li>
+                    <li><a class="dropdown-item" href="{% url 'orders:orders' %}">Your Orders</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <a class="dropdown-item" href="{% url 'orders:cart_view' %}">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="badge badge-pill badge-primary" id="cart-item-count" style="color:red;">
+                {{ total_quantity }} items
+            </span>
+            <span class="badge badge-pill badge-secondary" id="cart-total-price" style="color:green;">
+                ${{ total_amount }}
+            </span>
+        </a>
+                
+
+        <form class="d-flex" role="search" action="{% url 'shope:index' %}" method="get">
+            <input class="form-control me-2" type="search" name="product_name" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
     </div>
-  </div>
+</div>
 </nav>
+
+
+
+
+
+<script>
+    $(document).ready(function() {
+        console.log("DEBUG: Document ready! jQuery and script loaded successfully.");
+    
+        // Function to update the cart using AJAX
+        function updateCart(action, productId) {
+            var url = '';
+            if (action === 'add') {
+                url = '{% url "orders:add_cart_item" 0 %}'.replace('0', productId);
+            } else if (action === 'update') {
+                url = '{% url "orders:update_cart_item" 0 %}'.replace('0', productId);
+            } else if (action === 'delete') {
+                url = '{% url "orders:delete_cart_item" 0 %}'.replace('0', productId);
+            }
+    
+            console.log('DEBUG: Sending AJAX request to:', url);
+    
+            // Sending the AJAX request
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    action: action,
+                    product_id: productId,
+                    quantity: action === 'update' ? $('#quantity-' + productId).val() : null,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    console.log('DEBUG: AJAX response:', response);
+    
+                    // Dynamically update the navbar with the new cart item count and total quantity
+                    $('#cart-item-count').text(response.cart_item_count + ' items');  // Update cart item count
+                    $('#cart-total-price').text('$' + response.total_amount.toFixed(2));  // Update total amount
+                    $('#total-quantity').text(response.total_quantity + ' items');  // Update total quantity in the navbar
+    
+                    console.log('DEBUG: Cart item count updated to:', response.cart_item_count);
+                    console.log('DEBUG: Total quantity updated to:', response.total_quantity);
+                },
+                error: function(xhr, status, error) {
+                    console.error('DEBUG: Error updating cart:', error);
+                }
+            });
+        }
+    
+        // Example: add to cart button click handler
+        $('.add-to-cart-btn').on('click', function() {
+            var productId = $(this).data('product-id');
+            updateCart('add', productId);
+        });
+    });
+        
+</script>

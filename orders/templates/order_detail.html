@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+<h2 class="mb-4">Order Details</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Order #{{ order.pk }}</h5>
+        <p class="card-text">
+        <strong>Address: {{ order.order_address.city }},{{ order.order_address.region }}, {{ order.order_address.street }}</strong><br>
+        <strong>Order Date: {{ order.created_at }}</strong> <br>
+        <strong>Status:</strong> {{ order.payment_status }}<br>
+        <strong>Total Amount:</strong> ${{ order.total_amount }}
+        </p>
+    </div>
+</div>
+
+<h3 class="mt-4">Items in this Order:</h3>
+<div class="row">
+{% for item in order_items %}
+<div class="col-md-4">
+    <div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ item.product.name }}</h5>
+        <p class="card-text">
+        Quantity: {{ item.quantity }}<br>
+        Price: ${{ item.price }}
+        </p>
+    </div>
+    </div>
+</div>
+{% endfor %}
+</div>
+
+<a href="{% url 'orders:orders' %}" class="btn btn-secondary mt-3">Back to Orders</a>
+</div>
+{% endblock %}

@@ -15,7 +15,7 @@ def register_user(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('book_shope:index')
+            return redirect('shope:index')
         else:
             return render(request, 'registration/registration.html', {'form': form})
     else:
@@ -25,7 +25,7 @@ def register_user(request):
 class RegistrationView(FormView):
     form_class =    UseRegistrationForm
     template_name ='registration/registration.html'
-    success_url = reverse_lazy('book_shope:index-cbv')
+    success_url = reverse_lazy('shope:index-cbv')
     
     def form_valid(self, form):
         user = form.save()
@@ -40,7 +40,7 @@ class RegistrationView(FormView):
 def logout_user(request, form):
     logout(request)
     
-    return redirect('book_shope:index')
+    return redirect('shope:index')
 
 class LogoutView(FormView):
     
